@@ -1,3 +1,12 @@
-# Clickbait-Spoiling
+# Clickbait-Spoiling #
+[Clickbait Challenge at SemEval 2023 - Clickbait Spoiling](https://pan.webis.de/semeval23/pan23-web/clickbait-challenge.html)
 
-State-of-the-art: https://docs.google.com/document/d/1FtX-hCu8vj5tXwKAaU7MDKjUMDrYk_XWlIpc4lOtzq0/edit?usp=sharing 
+### Working team ###
+* Luca Nicoleta (MLC) - lucanicoleta81@gmail.com
+* Maniga Ioana (MLC) - ioana.mna@gmail.com
+* Ungureanu Octavian-Paul (MLC) - tavi2105@gmail.com
+
+__Team coordinator__: Trandabat Diana
+
+[State-of-the-art](https://docs.google.com/document/d/1FtX-hCu8vj5tXwKAaU7MDKjUMDrYk_XWlIpc4lOtzq0/edit?usp=sharing)
+  
