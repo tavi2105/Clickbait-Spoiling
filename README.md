@@ -9,4 +9,6 @@
 __Team coordinator__: Trandabat Diana
 
 [State-of-the-art](https://docs.google.com/document/d/1FtX-hCu8vj5tXwKAaU7MDKjUMDrYk_XWlIpc4lOtzq0/edit?usp=sharing)
+
+[Trello](https://trello.com/b/ZXynoety/clickbait-spoiling)
   
