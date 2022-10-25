@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="293a1684-c897-4530-88cd-9c30f5368658" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../Clickbait_Spoiling_App/Clickbait_Spoiling_App/Command/CommandInterface.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Clickbait_Spoiling_App/Clickbait_Spoiling_App/Command/CommandInvoker.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Clickbait_Spoiling_App/Clickbait_Spoiling_App/Command/SummarizationCommand.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Clickbait_Spoiling_App/Clickbait_Spoiling_App/Command/TrainingTriggerCommand.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="JupyterTrust" id="4857a822-a785-470d-9adf-113fcf8a5371" />
+  <component name="ProjectId" id="2GdzH15tbsi5vanuyeYeMUF9b6W" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="293a1684-c897-4530-88cd-9c30f5368658" name="Default Changelist" comment="" />
+      <created>1666733156713</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1666733156713</updated>
+      <workItem from="1666733181445" duration="13000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
