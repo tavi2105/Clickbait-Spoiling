@@ -3,7 +3,28 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.pipeline import Pipeline
 from sklearn.metrics import accuracy_score
+#### Optional
+# in caz ca dorim sa inlocuim tokenizator din CountVectorizer cu unul facut de noi care
+# sa se ocupe si de lematizare
+from nltk import word_tokenize
+from nltk.stem import WordNetLemmatizer
+from nltk.corpus import stopwords
+import nltk
+#
+#nltk.download('stopwords')
+#nltk.download('punkt')
+#nltk.download('wordnet')
+#nltk.download('omw-1.4')
+class LemmaTokenizer:
+    def __init__(self):
+        self.wnl = WordNetLemmatizer()
+    def __call__(self, doc):
+        regex_num_ponctuation = '(\d+)|([^\w\s])'
+        stopw = stopwords.words("english")
+        return [self.wnl.lemmatize(t) for t in word_tokenize(doc)
+                if not re.search(regex_num_ponctuation, t) and t not in stopw]
 
+###
 #prelucrare date test
 # citim json si il stocam intr-un dataframe
 df_test = pd.read_json("./validation.jsonl", lines=True)
@@ -43,3 +64,32 @@ model.fit(df['targetParagraphs'], df['tags'])
 y_pred = model.predict(df_test['targetParagraphs'])
 # calculam scorul
 print('Accuracy:', accuracy_score(df_test["tags"], y_pred))
+
+
+#SVM
+model2 = Pipeline(
+    steps=[
+        (# aici ii dam algoritmul ce se va ocupa cu prelucrarea textului, transformand-ul intr-un vector cu valori numerice
+            "count_verctorizer",CountVectorizer(stop_words='english')
+        ),
+
+     ('tfidf', TfidfTransformer()),
+        ('clf', SVC(kernel='rbf'))
+])
+
+model2.fit(df['targetParagraphs'], df['tags'])
+y_pred = model2.predict(df_test['targetParagraphs'])
+print(accuracy_score(df_test["tags"], y_pred))
+
+#Regresia Logistica
+model3 = Pipeline(steps=[
+    (
+    # aici ii dam algoritmul ce se va ocupa cu prelucrarea textului, transformand-ul intr-un vector cu valori numerice
+        "count_verctorizer", CountVectorizer(stop_words='english')
+    ),
+    ('select', SelectKBest(k=4)),
+    ('clf', LogisticRegression())])
+
+model3.fit(df['targetParagraphs'], df['tags'])
+y_pred = model3.predict(df_test['targetParagraphs'])
+print(accuracy_score(df_test["tags"], y_pred))
