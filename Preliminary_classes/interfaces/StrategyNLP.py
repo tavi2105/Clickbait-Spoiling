@@ -8,6 +8,8 @@ class StrategyNLP(ABC):
     The Context uses this interface to call the algorithm defined by Concrete
     Strategies.
     """
+    def __init__(self):
+        self.model = None
 
     @abstractmethod
     def prepare_data(self, data):

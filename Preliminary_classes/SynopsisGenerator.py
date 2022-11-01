@@ -1,5 +1,5 @@
 from interfaces.StrategyNLP import StrategyNLP
-from modele.ClickbaitSummaryType import ClickbaitSummaryType as cT
+from models.ClickbaitSummaryType import ClickbaitSummaryType as cT
 
 
 class SynopsisGenerator:
