@@ -1,5 +1,3 @@
-from Preliminary_classes.classification_algoritms.NaiveBayes import NaiveBayes
-from Preliminary_classes.classification_algoritms.SVM import SVM
 from Preliminary_classes.models.Clickbait import Clickbait
 from Preliminary_classes.models.ClickbaitSolved import ClickbaitSolved
 from Preliminary_classes.models.ClickbaitSummaryType import ClickbaitSummaryType
@@ -51,6 +49,35 @@ VALIDATING_DATA = [ClickbaitSolved("10", "PostText10", ["Something happened", "I
                                     "The price is big", "It costs 200000$"], "How much costs the new mac", "",
                                    "200000$", ["200000$"], [[[3, 9], [3, 16]]], ClickbaitSummaryType.PHRASE),
                    ]
-EVALUATING_DATA = [Clickbait("13", "PostText10", ["Something happened", "It was fantastic", "Everybody love it"],
-                                   "Something fantastic", "https://gamerant.com/"),
+EVALUATING_DATA = [Clickbait("13", "PostText13", ["Something happened", "It was fantastic", "Everybody love it"],
+                             "Something fantastic", "https://gamerant.com/"),
+                   Clickbait("14", "PostText14",
+                             ["The new mac appeared", "Everybody wanted to buy it", "But it is limited edition",
+                              "The price is big", "It costs 200000$"], "How much costs the new mac",
+                             "https://apple.com/",
+                             ),
                    ]
+
+SUMMARY_TYPES = [t.name for t in ClickbaitSummaryType]
+
+
+def is_fitted(model):
+    """
+    Checks if a scikit-learn estimator/transformer has already been fit.
+
+
+    Parameters
+    ----------
+    model: scikit-learn estimator (e.g. RandomForestClassifier)
+        or transformer (e.g. MinMaxScaler) object
+
+
+    Returns
+    -------
+    Boolean that indicates if ``model`` has already been fit (True) or not (False).
+    """
+
+    attrs = [v for v in vars(model)
+             if v.endswith("_") and not v.startswith("__")]
+
+    return len(attrs) != 0

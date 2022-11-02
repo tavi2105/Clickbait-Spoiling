@@ -40,7 +40,7 @@ class SVM(StrategyNLP):
 
     def apply_on_list_of_clickbaits(self, clickbait_list):
         preproc_data = self.prepare_data(clickbait_list)
-        sol = self.model.predict(preproc_data)
+        sol = self.model.predict(preproc_data['targetParagraphs'])
         return [ClickbaitSummaryType(s).name for s in sol]
 
     # Aceste metode vor fi implementate cand vom stabili o modalitate de a stoca modelele
