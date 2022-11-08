@@ -12,7 +12,7 @@ class AI(Observer):
         self.modelSelectorForClassification: ModelSelector
         self.modelSelectorForSummarization: ModelSelector
 
-    def load_necessary_data_from_database(self):
+    def load_necessary_data(self):
         pass
 
     def assemble_synopsis_generator(self):
