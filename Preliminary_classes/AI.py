@@ -1,5 +1,5 @@
 import SynopsisGenerator
-from interfaces.ModelSelector import ModelSelector
+from Preliminary_classes.ModelSelector import ModelSelector
 from interfaces.Observer import Observer
 
 
