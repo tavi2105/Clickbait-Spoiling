@@ -30,7 +30,7 @@ class LogisticRegression(StrategyNLP):
                     # aici ii dam algoritmul ce se va ocupa cu prelucrarea textului, transformand-ul intr-un vector cu valori numerice
                     "count_verctorizer", CountVectorizer(stop_words='english')
                 ),
-                ('tfidf', TfidfTransformer(use_idf=True, smooth_idf=True, sublinear_tf=True, norm='l2', )),
+                ('tfidf', TfidfTransformer()),
 
                 ('clf', LRmodel())
             ])

@@ -31,7 +31,7 @@ class NaiveBayes(StrategyNLP):
                     "count_verctorizer", CountVectorizer(stop_words='english')
                 ),
 
-                ('tfidf', TfidfTransformer(use_idf=True, smooth_idf=True)),
+                ('tfidf', TfidfTransformer(sublinear_tf=True)),
                 (  # aici precizam algoritmul ml ce dorim sa-l efectuam
                     "clf", MultinomialNB()
                 )

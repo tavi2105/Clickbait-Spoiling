@@ -5,9 +5,12 @@ import time
 from openpyxl import load_workbook
 import aspectlib, sys
 import aspectlib.debug
+
+from Preliminary_classes.DataExtractor import DataExtractor
 from Preliminary_classes.ModelSelector import ModelSelector
 from Preliminary_classes.classification_algoritms.LogisticRegression import LogisticRegression
 from Preliminary_classes.classification_algoritms.NaiveBayes import NaiveBayes
+from Preliminary_classes.classification_algoritms.SVM import SVM
 from Preliminary_classes.evaluation_strategies.eval_for_classification import ClassificationEvaluation
 from tests.test_utils import TRAINING_DATA, VALIDATING_DATA
 
@@ -60,5 +63,7 @@ with aspectlib.weave(
         NaiveBayes,
         time_log()), \
   aspectlib.weave(ClassificationEvaluation.calculate_score, xml_result_caching()):
-    m = ModelSelector([NaiveBayes(), LogisticRegression()], ClassificationEvaluation())
-    model = m.select_method(TRAINING_DATA, VALIDATING_DATA)
+    d = DataExtractor()
+    print()
+    m = ModelSelector([NaiveBayes(), LogisticRegression(), SVM()], ClassificationEvaluation())
+    model = m.select_method(d.get_train_data(), d.get_val_data())

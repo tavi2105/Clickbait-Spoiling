@@ -29,8 +29,8 @@ class SVM(StrategyNLP):
                     "count_verctorizer", CountVectorizer(stop_words='english')
                 ),
 
-                ('tfidf', TfidfTransformer(use_idf=True, smooth_idf=True)),
-                ('clf', SVC(kernel='rbf'))
+                ('tfidf', TfidfTransformer(sublinear_tf=True)),
+                ('clf', SVC(C=10, gamma=0.1))
             ])
         self.model.fit(proc_data["targetParagraphs"], proc_data["type"])
 
