@@ -1,4 +1,5 @@
 import pandas
+from sklearn.compose import ColumnTransformer
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.pipeline import Pipeline
@@ -14,29 +15,46 @@ class NaiveBayes(StrategyNLP):
         if isinstance(data[0],ClickbaitSolved):
             return pandas.DataFrame.from_records([{
                 "targetParagraphs": "\n".join(s.targetParagraphs),
+                "postText": "\n".join(s.postText),
+                "targetTitle": s.targetTitle,
                 "type": s.summary_type.value
             }
                 for s in data])
         return pandas.DataFrame.from_records([{
             "targetParagraphs": "\n".join(s.targetParagraphs),
+            "postText": "\n".join(s.postText),
+            "targetTitle": s.targetTitle,
         }
             for s in data])
 
     def train(self, data):
         proc_data = self.prepare_data(data)
-        self.model= Pipeline(
-            steps=[
-                (
-                    # aici ii dam algoritmul ce se va ocupa cu prelucrarea textului, transformand-ul intr-un vector cu valori numerice
-                    "count_verctorizer", CountVectorizer(stop_words='english')
-                ),
+        title_pipeline = Pipeline([
+            ('vect', CountVectorizer(stop_words="english")),
+            ('tdf', TfidfTransformer(sublinear_tf=True))
+        ])
+        description_pipeline = Pipeline([
+            ('vect', CountVectorizer(stop_words="english")),
+            ('tdf', TfidfTransformer(sublinear_tf=True))
+        ])
+        par_pipeline = Pipeline([
+            ('vect', CountVectorizer(stop_words="english")),
+            ('tdf', TfidfTransformer(sublinear_tf=True))
+        ])
+        # definim modelul
+        preprocessor = ColumnTransformer([
+            ('targetTitle', title_pipeline, 'targetTitle'),
+            ('postText', description_pipeline, 'postText'),
+            ('targetParagraphs', par_pipeline, 'targetParagraphs'),
+        ])
 
-                ('tfidf', TfidfTransformer(sublinear_tf=True)),
-                (  # aici precizam algoritmul ml ce dorim sa-l efectuam
-                    "clf", MultinomialNB()
-                )
-            ])
-        self.model.fit(proc_data["targetParagraphs"],proc_data["type"])
+        self.model = Pipeline([
+            ('preprocessor', preprocessor),
+            ('clf',
+             MultinomialNB())
+        ])
+
+        self.model.fit(proc_data,proc_data["type"])
 
     def apply_on_single_clickbait(self, clickbait):
         preproc_data = self.prepare_data([clickbait])
@@ -44,7 +62,7 @@ class NaiveBayes(StrategyNLP):
 
     def apply_on_list_of_clickbaits(self, clickbait_list):
         preproc_data = self.prepare_data(clickbait_list)
-        sol = self.model.predict(preproc_data['targetParagraphs'])
+        sol = self.model.predict(preproc_data)
         return [ClickbaitSummaryType(s).name for s in sol]
 
     # Aceste metode vor fi implementate cand vom stabili o modalitate de a stoca modelele

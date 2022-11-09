@@ -1,4 +1,5 @@
 import pandas
+from sklearn.compose import ColumnTransformer
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.linear_model import LogisticRegression as LRmodel
 from sklearn.pipeline import Pipeline
@@ -14,27 +15,44 @@ class LogisticRegression(StrategyNLP):
         if isinstance(data[0], ClickbaitSolved):
             return pandas.DataFrame.from_records([{
                 "targetParagraphs": "\n".join(s.targetParagraphs),
+                "postText": "\n".join(s.postText),
+                "targetTitle": s.targetTitle,
                 "type": s.summary_type.value
             }
                 for s in data])
         return pandas.DataFrame.from_records([{
-            "targetParagraphs": "\n".join(s.targetParagraphs),
-        }
-            for s in data])
+                "targetParagraphs": "\n".join(s.targetParagraphs),
+                "postText": "\n".join(s.postText),
+                "targetTitle": s.targetTitle,
+            }
+                for s in data])
 
     def train(self, data):
-        proc_data = self.prepare_data(data)
-        self.model = Pipeline(
-            steps=[
-                (
-                    # aici ii dam algoritmul ce se va ocupa cu prelucrarea textului, transformand-ul intr-un vector cu valori numerice
-                    "count_verctorizer", CountVectorizer(stop_words='english')
-                ),
-                ('tfidf', TfidfTransformer()),
+            proc_data = self.prepare_data(data)
+            title_pipeline = Pipeline([
+                ('vect', CountVectorizer(stop_words="english")),
+                ('tdf', TfidfTransformer())
+            ])
+            description_pipeline = Pipeline([
+                ('vect', CountVectorizer(stop_words="english")),
+                ('tdf', TfidfTransformer())
+            ])
+            par_pipeline = Pipeline([
+                ('vect', CountVectorizer(stop_words="english")),
+                ('tdf', TfidfTransformer())
+            ])
+            # definim modelul
+            preprocessor = ColumnTransformer([
+                ('targetTitle', title_pipeline, 'targetTitle'),
+                ('postText', description_pipeline, 'postText'),
+                ('targetParagraphs', par_pipeline, 'targetParagraphs'),
+            ])
 
+            self.model = Pipeline([
+                ('preprocessor', preprocessor),
                 ('clf', LRmodel())
             ])
-        self.model.fit(proc_data["targetParagraphs"], proc_data["type"])
+            self.model.fit(proc_data, proc_data["type"])
 
     def apply_on_single_clickbait(self, clickbait):
         preproc_data = self.prepare_data([clickbait])
@@ -42,7 +60,7 @@ class LogisticRegression(StrategyNLP):
 
     def apply_on_list_of_clickbaits(self, clickbait_list):
         preproc_data = self.prepare_data(clickbait_list)
-        sol = self.model.predict(preproc_data['targetParagraphs'])
+        sol = self.model.predict(preproc_data)
         return [ClickbaitSummaryType(s).name for s in sol]
 
     def save(self):

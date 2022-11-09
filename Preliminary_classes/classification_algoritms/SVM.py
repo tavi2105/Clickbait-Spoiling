@@ -1,3 +1,4 @@
+from sklearn.compose import ColumnTransformer
 from sklearn.svm import SVC
 import pandas
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
@@ -13,26 +14,44 @@ class SVM(StrategyNLP):
         if isinstance(data[0], ClickbaitSolved):
             return pandas.DataFrame.from_records([{
                 "targetParagraphs": "\n".join(s.targetParagraphs),
+                "postText": "\n".join(s.postText),
+                "targetTitle": s.targetTitle,
                 "type": s.summary_type.value
             }
                 for s in data])
         return pandas.DataFrame.from_records([{
-            "targetParagraphs": "\n".join(s.targetParagraphs),
-        }
-            for s in data])
+                "targetParagraphs": "\n".join(s.targetParagraphs),
+                "postText": "\n".join(s.postText),
+                "targetTitle": s.targetTitle,
+            }
+                for s in data])
 
     def train(self, data):
-        proc_data = self.prepare_data(data)
-        self.model = Pipeline(
-            steps=[
-                (
-                    "count_verctorizer", CountVectorizer(stop_words='english')
-                ),
+            proc_data = self.prepare_data(data)
+            title_pipeline = Pipeline([
+                ('vect', CountVectorizer(stop_words="english")),
+                ('tdf', TfidfTransformer(sublinear_tf=True))
+            ])
+            description_pipeline = Pipeline([
+                ('vect', CountVectorizer(stop_words="english")),
+                ('tdf', TfidfTransformer(sublinear_tf=True))
+            ])
+            par_pipeline = Pipeline([
+                ('vect', CountVectorizer(stop_words="english")),
+                ('tdf', TfidfTransformer(sublinear_tf=True))
+            ])
+            # definim modelul
+            preprocessor = ColumnTransformer([
+                ('targetTitle', title_pipeline, 'targetTitle'),
+                ('postText', description_pipeline, 'postText'),
+                ('targetParagraphs', par_pipeline, 'targetParagraphs'),
+            ])
 
-                ('tfidf', TfidfTransformer(sublinear_tf=True)),
+            self.model = Pipeline([
+                ('preprocessor', preprocessor),
                 ('clf', SVC(C=10, gamma=0.1))
             ])
-        self.model.fit(proc_data["targetParagraphs"], proc_data["type"])
+            self.model.fit(proc_data, proc_data["type"])
 
     def apply_on_single_clickbait(self, clickbait):
         preproc_data = self.prepare_data([clickbait])
@@ -40,7 +59,7 @@ class SVM(StrategyNLP):
 
     def apply_on_list_of_clickbaits(self, clickbait_list):
         preproc_data = self.prepare_data(clickbait_list)
-        sol = self.model.predict(preproc_data['targetParagraphs'])
+        sol = self.model.predict(preproc_data)
         return [ClickbaitSummaryType(s).name for s in sol]
 
     # Aceste metode vor fi implementate cand vom stabili o modalitate de a stoca modelele
