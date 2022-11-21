@@ -1,4 +1,4 @@
-from Preliminary_classes.models.ClickbaitSummaryType import ClickbaitSummaryType
+from models.ClickbaitSummaryType import ClickbaitSummaryType
 
 
 class ClickbaitSynopsis:

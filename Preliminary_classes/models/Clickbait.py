@@ -6,5 +6,3 @@ class Clickbait:
         self.targetParagraphs: str = targetParagraphs
         self.uuid: str = uuid
         self.postText: str = postText
-
-        

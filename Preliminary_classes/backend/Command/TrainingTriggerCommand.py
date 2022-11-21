@@ -1,5 +1,4 @@
 from .CommandInterface import Command
-import DataExtractor
 from FacadeAI import FacadeAI
 
 

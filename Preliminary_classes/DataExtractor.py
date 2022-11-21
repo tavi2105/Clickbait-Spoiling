@@ -1,8 +1,7 @@
 import pandas as pd
 
-from Preliminary_classes.interfaces.SingletonMeta import SingletonMeta
-from Preliminary_classes.models.Clickbait import Clickbait
-from Preliminary_classes.models.ClickbaitSolved import ClickbaitSolved
+from interfaces.SingletonMeta import SingletonMeta
+from models.ClickbaitSolved import ClickbaitSolved
 
 
 class DataExtractor(metaclass=SingletonMeta):

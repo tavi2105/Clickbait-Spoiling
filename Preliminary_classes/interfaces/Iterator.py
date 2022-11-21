@@ -1,6 +1,5 @@
 from __future__ import annotations
-from collections.abc import Iterable, Iterator
-from typing import Any, List
+from collections.abc import Iterator
 
 
 class DataIterator(Iterator):

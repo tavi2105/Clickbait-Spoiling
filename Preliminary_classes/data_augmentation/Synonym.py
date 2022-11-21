@@ -1,8 +1,5 @@
 import json
-import nlpaug.augmenter.char as nac
 import nlpaug.augmenter.word as naw
-import nlpaug.augmenter.sentence as nas
-import nltk
 
 TOPK = 20  # default=100
 ACT = 'insert'  # "substitute"

@@ -4,10 +4,10 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.pipeline import Pipeline
 
-from Preliminary_classes.interfaces.StrategyNLP import StrategyNLP
-from Preliminary_classes.models.Clickbait import Clickbait
-from Preliminary_classes.models.ClickbaitSolved import ClickbaitSolved
-from Preliminary_classes.models.ClickbaitSummaryType import ClickbaitSummaryType
+from interfaces.StrategyNLP import StrategyNLP
+from models.Clickbait import Clickbait
+from models.ClickbaitSolved import ClickbaitSolved
+from models.ClickbaitSummaryType import ClickbaitSummaryType
 
 
 class NaiveBayes(StrategyNLP):

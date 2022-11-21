@@ -1,6 +1,4 @@
 from abc import ABC, abstractmethod
-from random import randrange
-from typing import List
 
 from interfaces import Observer
 

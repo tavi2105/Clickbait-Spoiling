@@ -1,4 +1,4 @@
-from Preliminary_classes.interfaces.StrategyForEvaluatingModels import StrategyForEvaluatingModels
+from interfaces.StrategyForEvaluatingModels import StrategyForEvaluatingModels
 from sklearn.metrics import accuracy_score
 
 

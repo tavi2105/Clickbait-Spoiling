@@ -1,5 +1,5 @@
 from .CommandInterface import Command
-from modele.Clickbait import Clickbait
+from models.Clickbait import Clickbait
 from FacadeAI import FacadeAI
 
 
