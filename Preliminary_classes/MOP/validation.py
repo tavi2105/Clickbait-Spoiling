@@ -1,4 +1,3 @@
-
 all_keys = ['targetDescription', 'postPlatform', 'targetTitle', 'spoilerPositions', 'targetParagraphs', 'spoiler',
             'targetMedia', 'uuid', 'postId', 'tags', 'provenance', 'targetKeywords', 'postText', 'targetUrl']
 important_keys = ["uuid", "postText", "targetParagraphs", "targetTitle", "targetUrl"]
