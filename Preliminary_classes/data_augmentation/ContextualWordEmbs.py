@@ -27,24 +27,28 @@ class ContextualWordEmbs:
     def paragraphs_augmentation(self, paragraphs):
         paragraphs_augmented = []
         for paragraph in paragraphs:
-            paragraphs_augmented.append(self.aug_bert.augment(paragraph))
+            paragraphs_augmented.append(self.aug_bert.augment(paragraph)[0])
 
         return paragraphs_augmented
 
 
-aug = ContextualWordEmbs()
+def con_main_aug():
+    aug = ContextualWordEmbs()
 
-df_train = pd.read_json("../data/train.jsonl", lines=True)
-result = df_train.to_json(orient="records")
-parsed = json.loads(result)
-df = pd.DataFrame(aug.augmentation(parsed))
+    df_train = pd.read_json("../data/train.jsonl", lines=True)
+    result = df_train.to_json(orient="records")
+    parsed = json.loads(result)
+    df = pd.DataFrame(aug.augmentation(parsed))
 
-df.to_json('../data/augmented_synonyms_train.jsonl', orient='records', lines=True)
+    df.to_json('../data/augmented_synonyms_train.jsonl', orient='records', lines=True)
+
+    df_train = pd.read_json("../data/validation.jsonl", lines=True)
+    result = df_train.to_json(orient="records")
+    parsed = json.loads(result)
+    df = pd.DataFrame(aug.augmentation(parsed))
+
+    df.to_json('../data/augmented_synonyms_val.jsonl', orient='records', lines=True)
 
 
-df_train = pd.read_json("../data/validation.jsonl", lines=True)
-result = df_train.to_json(orient="records")
-parsed = json.loads(result)
-df = pd.DataFrame(aug.augmentation(parsed))
-
-df.to_json('../data/augmented_synonyms_val.jsonl', orient='records', lines=True)
+if __name__ == '__main__':
+    con_main_aug()
