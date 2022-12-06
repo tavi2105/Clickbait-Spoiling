@@ -36,19 +36,23 @@ class Synonym:
         return paragraphs_augmented
 
 
-aug = Synonym()
+def main_aug():
+    aug = Synonym()
 
-df_train = pd.read_json("../data/train.jsonl", lines=True)
-result = df_train.to_json(orient="records")
-parsed = json.loads(result)
-df = pd.DataFrame(aug.augmentation(parsed))
+    df_train = pd.read_json("../data/train.jsonl", lines=True)
+    result = df_train.to_json(orient="records")
+    parsed = json.loads(result)
+    df = pd.DataFrame(aug.augmentation(parsed))
 
-df.to_json('../data/augmented_synonyms_train.jsonl', orient='records', lines=True)
+    df.to_json('../data/augmented_synonyms_train.jsonl', orient='records', lines=True)
+
+    df_train = pd.read_json("../data/validation.jsonl", lines=True)
+    result = df_train.to_json(orient="records")
+    parsed = json.loads(result)
+    df = pd.DataFrame(aug.augmentation(parsed))
+
+    df.to_json('../data/augmented_synonyms_val.jsonl', orient='records', lines=True)
 
 
-df_train = pd.read_json("../data/validation.jsonl", lines=True)
-result = df_train.to_json(orient="records")
-parsed = json.loads(result)
-df = pd.DataFrame(aug.augmentation(parsed))
-
-df.to_json('../data/augmented_synonyms_val.jsonl', orient='records', lines=True)
+if __name__ == '__main__':
+    main_aug()
