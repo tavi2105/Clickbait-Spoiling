@@ -31,7 +31,7 @@ class Synonym:
     def paragraphs_augmentation(self, paragraphs):
         paragraphs_augmented = []
         for paragraph in paragraphs:
-            paragraphs_augmented.append(self.aug.augment(paragraph))
+            paragraphs_augmented.append(self.aug.augment(paragraph)[0])
 
         return paragraphs_augmented
 
@@ -43,7 +43,7 @@ result = df_train.to_json(orient="records")
 parsed = json.loads(result)
 df = pd.DataFrame(aug.augmentation(parsed))
 
-df.to_json('../data/augmented_contextual_train.jsonl', orient='records', lines=True)
+df.to_json('../data/augmented_synonyms_train.jsonl', orient='records', lines=True)
 
 
 df_train = pd.read_json("../data/validation.jsonl", lines=True)
@@ -51,4 +51,4 @@ result = df_train.to_json(orient="records")
 parsed = json.loads(result)
 df = pd.DataFrame(aug.augmentation(parsed))
 
-df.to_json('../data/augmented_contextual_val.jsonl', orient='records', lines=True)
+df.to_json('../data/augmented_synonyms_val.jsonl', orient='records', lines=True)
