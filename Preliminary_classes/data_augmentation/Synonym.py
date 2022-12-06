@@ -1,6 +1,8 @@
 import json
 import nlpaug.augmenter.word as naw
 
+import pandas as pd
+
 TOPK = 20  # default=100
 ACT = 'insert'  # "substitute"
 
@@ -14,16 +16,15 @@ class Synonym:
                                   stopwords=None, tokenizer=None, reverse_tokenizer=None, stopwords_regex=None,
                                   force_reload=False,
                                   verbose=0)
-        # self.file = open("augmented_synonyms.jsonl", "a", encoding='utf-8')
-        # #with open('train.jsonl', 'r', encoding='utf-8') as json_file:
-        # self.json_list = list(json_file)
 
     def augmentation(self, json_list):
         new_entries = []
-        for json_str in json_list:
-            entry = json.loads(json_str)
+        counter = 1
+        for entry in json_list:
             entry["targetParagraphs"] = self.paragraphs_augmentation(entry["targetParagraphs"])
-            new_entries.append(str(entry))
+            new_entries.append(entry)
+            print("still working: " + str(counter))
+            counter = counter + 1
 
         return new_entries
 
@@ -33,3 +34,21 @@ class Synonym:
             paragraphs_augmented.append(self.aug.augment(paragraph))
 
         return paragraphs_augmented
+
+
+aug = Synonym()
+
+df_train = pd.read_json("../data/train.jsonl", lines=True)
+result = df_train.to_json(orient="records")
+parsed = json.loads(result)
+df = pd.DataFrame(aug.augmentation(parsed))
+
+df.to_json('../data/augmented_contextual_train.jsonl', orient='records', lines=True)
+
+
+df_train = pd.read_json("../data/validation.jsonl", lines=True)
+result = df_train.to_json(orient="records")
+parsed = json.loads(result)
+df = pd.DataFrame(aug.augmentation(parsed))
+
+df.to_json('../data/augmented_contextual_val.jsonl', orient='records', lines=True)
