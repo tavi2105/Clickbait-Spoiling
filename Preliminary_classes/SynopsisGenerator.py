@@ -6,9 +6,9 @@ class SynopsisGenerator:
     def __init__(self, strategy_for_classification: StrategyNLP, strategy_for_phrase_summarization: StrategyNLP,
                  strategy_for_passage_summarization: StrategyNLP, strategy_for_multi_summarization: StrategyNLP):
         self.strategyForClassification = strategy_for_classification
-        self.strategiesForSummarization = {cT.PASSAGE: strategy_for_passage_summarization,
-                                           cT.PHRASE: strategy_for_phrase_summarization,
-                                           cT.MULTI: strategy_for_multi_summarization}
+        self.strategiesForSummarization = {cT.PASSAGE.name: strategy_for_passage_summarization,
+                                           cT.PHRASE.name: strategy_for_phrase_summarization,
+                                           cT.MULTI.name: strategy_for_multi_summarization}
 
     def classify(self, clickbait):
         return self.strategyForClassification.apply_on_single_clickbait(clickbait)

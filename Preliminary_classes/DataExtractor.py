@@ -6,8 +6,8 @@ from models.ClickbaitSolved import ClickbaitSolved
 
 class DataExtractor(metaclass=SingletonMeta):
     def __init__(self):
-        df_train = pd.read_json("../data/train.jsonl", lines=True)
-        df_val = pd.read_json("../data/validation.jsonl", lines=True)
+        df_train = pd.read_json("./data/train.jsonl", lines=True)
+        df_val = pd.read_json("./data/validation.jsonl", lines=True)
         # df_aug_con = pd.read_json("../data/augmented_contextual.jsonl", lines=True)
         # df_aug_syn = pd.read_json("../data/augmented_synonyms.jsonl", lines=True)
 
