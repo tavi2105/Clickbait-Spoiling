@@ -1,6 +1,11 @@
+import cProfile
+import pstats
+from pstats import SortKey
 from AI import AI
 from models.Clickbait import Clickbait
 from summarization_strategies.qa import QA
+
+prof = cProfile.Profile()
 
 
 def main():
@@ -15,12 +20,22 @@ def main():
                                   "LiveScience reports weather is expected to be the predominant factor in the ozone hole's size until 2025, at which point CFCs will have dropped enough as a result of the Montreal Protocol to become noticeable.",
                                   "By 2070, however, the ozone hole is expected to have made a full recovery.",
                                   "\"It’s not going to be a smooth ride,\" Strahan cautioned the Los Angeles Times. \"There will be some bumps in the road, but overall the trend is downward.\""],
-                                 "Hole In Ozone Layer Expected To Make Full Recovery By 2070: NASA",  "https"
-                                                                                                      "://gamerant.com/")
+                                 "Hole In Ozone Layer Expected To Make Full Recovery By 2070: NASA", "https"
+                                                                                                     "://gamerant.com/")
+    prof.enable()
     ai = AI()
     print(ai.generate_clickbait_synopsis(sample_clickbait))
-
+    prof.disable()
 
 
 if __name__ == "__main__":
     main()
+    # retrieve the stats
+    ps = pstats.Stats(prof)
+    # Remove directory path form file names
+    ps.strip_dirs()
+    # Sort by the cumulative time to know what function need performance improvements
+    ps.sort_stats(SortKey.CUMULATIVE)
+    # Show performance statistics just for the functions we implemented
+    ps.print_stats(
+        'qa|LogisticRegression|NaiveBayes|SVM|eval_for_classification|eval_for_summarization|SynopsisGenerator|DataExtractor|ModelSelector|AI')
