@@ -13,5 +13,5 @@ class StrategyForEvaluatingModels(ABC):
         pass
 
     @abstractmethod
-    def calculate_score(self, model_output, correct_output):
+    def calculate_score(self, model,validating_data):
         pass
