@@ -7,6 +7,7 @@ from models.Clickbait import Clickbait
 from models.ClickbaitSolved import ClickbaitSolved
 from models.ClickbaitSummaryType import ClickbaitSummaryType
 from interfaces.StrategyNLP import StrategyNLP
+from nltk.tokenize import NLTKWordTokenizer
 
 
 class SVM(StrategyNLP):
@@ -20,38 +21,40 @@ class SVM(StrategyNLP):
             }
                 for s in data])
         return pandas.DataFrame.from_records([{
-                "targetParagraphs": "\n".join(s.targetParagraphs),
-                "postText": "\n".join(s.postText),
-                "targetTitle": s.targetTitle,
-            }
-                for s in data])
+            "targetParagraphs": "\n".join(s.targetParagraphs),
+            "postText": "\n".join(s.postText),
+            "targetTitle": s.targetTitle,
+        }
+            for s in data])
 
     def train(self, data):
-            proc_data = self.prepare_data(data)
-            title_pipeline = Pipeline([
-                ('vect', CountVectorizer(stop_words="english")),
-                ('tdf', TfidfTransformer(sublinear_tf=True))
-            ])
-            description_pipeline = Pipeline([
-                ('vect', CountVectorizer(stop_words="english")),
-                ('tdf', TfidfTransformer(sublinear_tf=True))
-            ])
-            par_pipeline = Pipeline([
-                ('vect', CountVectorizer(stop_words="english")),
-                ('tdf', TfidfTransformer(sublinear_tf=True))
-            ])
-            # definim modelul
-            preprocessor = ColumnTransformer([
-                ('targetTitle', title_pipeline, 'targetTitle'),
-                ('postText', description_pipeline, 'postText'),
-                ('targetParagraphs', par_pipeline, 'targetParagraphs'),
-            ])
+        proc_data = self.prepare_data(data)
+        title_pipeline = Pipeline([
+            ('vect', CountVectorizer(stop_words="english")),
+            ('tdf', TfidfTransformer(sublinear_tf=True))
+        ])
+        description_pipeline = Pipeline([
+            ('vect', CountVectorizer(stop_words="english")),
+            ('tdf', TfidfTransformer(sublinear_tf=True))
+        ])
+        par_pipeline = Pipeline([
+            ('vect', CountVectorizer(stop_words="english", ngram_range=(1, 3), min_df=2
+                                     , tokenizer=NLTKWordTokenizer().tokenize
+                                     )),
+            ('tdf', TfidfTransformer(sublinear_tf=True))
+        ])
+        # definim modelul
+        preprocessor = ColumnTransformer([
+            ('targetTitle', title_pipeline, 'targetTitle'),
+            ('postText', description_pipeline, 'postText'),
+            ('targetParagraphs', par_pipeline, 'targetParagraphs'),
+        ])
 
-            self.model = Pipeline([
-                ('preprocessor', preprocessor),
-                ('clf', SVC(C=10, gamma=0.1))
-            ])
-            self.model.fit(proc_data, proc_data["type"])
+        self.model = Pipeline([
+            ('preprocessor', preprocessor),
+            ('clf', SVC(C=10, gamma=0.1))
+        ])
+        self.model.fit(proc_data, proc_data["type"])
 
     def apply_on_single_clickbait(self, clickbait):
         preproc_data = self.prepare_data([clickbait])
@@ -69,4 +72,3 @@ class SVM(StrategyNLP):
 
     def load(self):
         pass
-

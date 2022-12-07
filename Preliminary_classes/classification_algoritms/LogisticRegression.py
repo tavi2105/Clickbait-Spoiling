@@ -3,7 +3,7 @@ from sklearn.compose import ColumnTransformer
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.linear_model import LogisticRegression as LRmodel
 from sklearn.pipeline import Pipeline
-
+from nltk.tokenize import word_tokenize
 from interfaces.StrategyNLP import StrategyNLP
 from models.Clickbait import Clickbait
 from models.ClickbaitSolved import ClickbaitSolved
@@ -38,7 +38,7 @@ class LogisticRegression(StrategyNLP):
                 ('tdf', TfidfTransformer())
             ])
             par_pipeline = Pipeline([
-                ('vect', CountVectorizer(stop_words="english")),
+                ('vect', CountVectorizer(stop_words="english", ngram_range=(1, 3), min_df=2, tokenizer=word_tokenize)),
                 ('tdf', TfidfTransformer())
             ])
             # definim modelul

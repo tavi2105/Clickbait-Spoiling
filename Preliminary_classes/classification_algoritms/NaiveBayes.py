@@ -3,7 +3,7 @@ from sklearn.compose import ColumnTransformer
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.pipeline import Pipeline
-
+from nltk.tokenize import word_tokenize
 from interfaces.StrategyNLP import StrategyNLP
 from models.Clickbait import Clickbait
 from models.ClickbaitSolved import ClickbaitSolved
@@ -38,7 +38,9 @@ class NaiveBayes(StrategyNLP):
             ('tdf', TfidfTransformer(sublinear_tf=True))
         ])
         par_pipeline = Pipeline([
-            ('vect', CountVectorizer(stop_words="english")),
+            ('vect', CountVectorizer(stop_words="english", ngram_range=(1, 3), min_df=2, max_df=0.7,
+                                     tokenizer=word_tokenize
+                                     )),
             ('tdf', TfidfTransformer(sublinear_tf=True))
         ])
         # definim modelul

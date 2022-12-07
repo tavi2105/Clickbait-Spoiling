@@ -1,9 +1,10 @@
 import logging
-from datetime import datetime
 import time
-from openpyxl import load_workbook
-import aspectlib, sys
+from datetime import datetime
+import aspectlib
 import aspectlib.debug
+import sys
+from openpyxl import load_workbook
 
 from DataExtractor import DataExtractor
 from ModelSelector import ModelSelector
@@ -23,7 +24,7 @@ def time_log():
 
         result = yield aspectlib.Proceed
         result_log = result
-        if hasattr(result,'size') and result.size>3:
+        if hasattr(result, 'size') and result.size > 3:
             result_log = "Too large to display"
         logging.info("Result => " + str(result_log))
         if hasattr(result, "__class__"):
@@ -40,11 +41,12 @@ def xml_result_caching():
     @aspectlib.Aspect
     def xml_result_caching_aspect(*args):
         model_name = args[1].__class__.__name__
-        result=yield aspectlib.Proceed
+        result = yield aspectlib.Proceed
         wb = load_workbook("results_caching/results.xlsx")
         ws = wb[model_name]
-        ws.append([datetime.now().strftime("%d/%m/%Y %H:%M:%S"),result])
+        ws.append([datetime.now().strftime("%d/%m/%Y %H:%M:%S"), result])
         wb.save("results_caching/results.xlsx")
+
     return xml_result_caching_aspect
 
 
@@ -57,10 +59,10 @@ with aspectlib.weave(
          # print_to=sys.stdout,
          # stacktrace=None,)
          ],
-),aspectlib.weave(
-        NaiveBayes,
-        time_log()), \
-  aspectlib.weave(ClassificationEvaluation.calculate_score, xml_result_caching()):
+), aspectlib.weave(
+    NaiveBayes,
+    time_log()), \
+        aspectlib.weave(ClassificationEvaluation.calculate_score, xml_result_caching()):
     d = DataExtractor()
     print()
     m = ModelSelector([NaiveBayes(), LogisticRegression(), SVM()], ClassificationEvaluation())
