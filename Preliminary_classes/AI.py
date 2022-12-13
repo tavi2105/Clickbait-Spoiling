@@ -20,18 +20,21 @@ class AI(Observer):
         self.synopsis_generator: SynopsisGenerator = None
         self.modelSelectorForClassification: ModelSelector = ModelSelector([NaiveBayes(), LogisticRegression(), SVM()],
                                                                            ClassificationEvaluation())
-        self.modelSelectorForSummarization: ModelSelector = ModelSelector([QA()],EvalForSummarization())
+        self.modelSelectorForSummarization: ModelSelector = ModelSelector([QA()], EvalForSummarization())
         self.dataExtractor: DataExtractor = DataExtractor()
 
     def load_necessary_data(self):
         pass
 
     def assemble_synopsis_generator(self):
-        strategy_for_classification = self.modelSelectorForClassification.select_method(self.dataExtractor.get_train_data(),
-                                                                                        self.dataExtractor.get_val_data())
-        strategy_for_summarization = self.modelSelectorForSummarization.select_method(self.dataExtractor.get_train_data(),
-                                                                                        self.dataExtractor.get_val_data())
-        self.synopsis_generator = SynopsisGenerator(strategy_for_classification, strategy_for_summarization, strategy_for_summarization, strategy_for_summarization)
+        strategy_for_classification = self.modelSelectorForClassification.select_method(
+            self.dataExtractor.get_train_data(),
+            self.dataExtractor.get_val_data())
+        strategy_for_summarization = self.modelSelectorForSummarization.select_method(
+            self.dataExtractor.get_train_data(),
+            self.dataExtractor.get_val_data())
+        self.synopsis_generator = SynopsisGenerator(strategy_for_classification, strategy_for_summarization,
+                                                    strategy_for_summarization, strategy_for_summarization)
 
     def get_synopsis_generator(self) -> SynopsisGenerator:
         return self.synopsis_generator

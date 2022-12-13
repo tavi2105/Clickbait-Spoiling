@@ -4,7 +4,6 @@ from transformers import pipeline
 from interfaces.StrategyNLP import StrategyNLP
 from models.Clickbait import Clickbait
 from models.ClickbaitSolved import ClickbaitSolved
-from models.ClickbaitSummaryType import ClickbaitSummaryType
 
 
 class QA(StrategyNLP):
@@ -17,19 +16,18 @@ class QA(StrategyNLP):
             }
                 for s in data])
         return pandas.DataFrame.from_records([{
-                "context": "\n".join(s.targetParagraphs),
-                "question": "\n".join(s.postText),
-            }
-                for s in data])
+            "context": "\n".join(s.targetParagraphs),
+            "question": "\n".join(s.postText),
+        }
+            for s in data])
 
     def train(self, data):
-            #proc_data = self.prepare_data(data)
-            model_checkpoint = "huggingface-course/bert-finetuned-squad"
-            self.model = pipeline("question-answering", model=model_checkpoint)
+        model_checkpoint = "huggingface-course/bert-finetuned-squad"
+        self.model = pipeline("question-answering", model=model_checkpoint)
 
     def apply_on_single_clickbait(self, clickbait):
         preproc_data = self.prepare_data([clickbait])
-        return self.model(preproc_data["question"].tolist()[0],preproc_data["context"].tolist()[0])
+        return self.model(preproc_data["question"].tolist()[0], preproc_data["context"].tolist()[0])["answer"]
 
     def apply_on_list_of_clickbaits(self, clickbait_list):
         sol = []

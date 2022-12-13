@@ -14,16 +14,14 @@ class EvalForSummarization(StrategyForEvaluatingModels):
         self.correct_output = t
 
     def convert_to_embedding(self, data: [str]):
-        print(data)
         return self.model.encode(data[:5], convert_to_tensor=True)
 
-    def calculate_score(self, model,validating_data):
+    def calculate_score(self, model, validating_data):
         em1 = self.convert_to_embedding(self.correct_output)
-        em2 = self.convert_to_embedding([x["answer"] for x in model.apply_on_list_of_clickbaits(validating_data[:5])])
+        em2 = self.convert_to_embedding([x for x in model.apply_on_list_of_clickbaits(validating_data[:5])])
         scores = []
         for i in range(len(em2)):
             scores.append(util.pytorch_cos_sim(em1[i], em2[i]).item())
 
-        score =sum(scores)/ len(em2)
-        print("Eval for summarization:",score)
+        score = sum(scores) / len(em2)
         return score
