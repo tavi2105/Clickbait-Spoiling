@@ -10,16 +10,16 @@ class QA(StrategyNLP):
     def prepare_data(self, data: [Clickbait]):
         if isinstance(data[0], ClickbaitSolved):
             return pandas.DataFrame.from_records([{
-                "context": "\n".join(s.targetParagraphs),
-                "question": "\n".join(s.postText),
-                "spoiler": s.spoiler,
+                "context": "\n".join(clickbait_solved.targetParagraphs),
+                "question": "\n".join(clickbait_solved.postText),
+                "spoiler": clickbait_solved.spoiler,
             }
-                for s in data])
+                for clickbait_solved in data])
         return pandas.DataFrame.from_records([{
-            "context": "\n".join(s.targetParagraphs),
-            "question": "\n".join(s.postText),
+            "context": "\n".join(clickbait.targetParagraphs),
+            "question": "\n".join(clickbait.postText),
         }
-            for s in data])
+            for clickbait in data])
 
     def train(self, data):
         model_checkpoint = "huggingface-course/bert-finetuned-squad"
@@ -30,10 +30,10 @@ class QA(StrategyNLP):
         return self.model(preproc_data["question"].tolist()[0], preproc_data["context"].tolist()[0])["answer"]
 
     def apply_on_list_of_clickbaits(self, clickbait_list):
-        sol = []
+        solutions = []
         for c in clickbait_list:
-            sol.append(self.apply_on_single_clickbait(c))
-        return sol
+            solutions.append(self.apply_on_single_clickbait(c))
+        return solutions
 
     # Aceste metode vor fi implementate cand vom stabili o modalitate de a stoca modelele
     # dar momentan nu se încadrează in prioritatea acestor prime 2 iteratii

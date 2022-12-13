@@ -4,7 +4,7 @@ from pstats import SortKey
 from AI import AI
 from models.Clickbait import Clickbait
 
-prof = cProfile.Profile()
+performance_profiler = cProfile.Profile()
 
 
 def main():
@@ -41,16 +41,16 @@ def main():
                                   "\"There will be some bumps in the road, but overall the trend is downward.\""],
                                  "Hole In Ozone Layer Expected To Make Full Recovery By 2070: NASA", "https"
                                                                                                      "://gamerant.com/")
-    prof.enable()
+    performance_profiler.enable()
     ai = AI()
     print(ai.generate_clickbait_synopsis(sample_clickbait))
-    prof.disable()
+    performance_profiler.disable()
 
 
 if __name__ == "__main__":
     main()
     # retrieve the stats
-    ps = pstats.Stats(prof)
+    ps = pstats.Stats(performance_profiler)
     # Remove directory path form file names
     ps.strip_dirs()
     # Sort by the cumulative time to know what function need performance improvements

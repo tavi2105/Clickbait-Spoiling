@@ -22,18 +22,18 @@ class StrategyForClassification(StrategyNLP, ABC):
     def prepare_data(self, data: [Clickbait]):
         if isinstance(data[0], ClickbaitSolved):
             return pandas.DataFrame.from_records([{
-                "targetParagraphs": "\n".join(s.targetParagraphs),
-                "postText": "\n".join(s.postText),
-                "targetTitle": s.targetTitle,
-                "type": s.summary_type.value
+                "targetParagraphs": "\n".join(clickbait_solved.targetParagraphs),
+                "postText": "\n".join(clickbait_solved.postText),
+                "targetTitle": clickbait_solved.targetTitle,
+                "type": clickbait_solved.summary_type.value
             }
-                for s in data])
+                for clickbait_solved in data])
         return pandas.DataFrame.from_records([{
-            "targetParagraphs": "\n".join(s.targetParagraphs),
-            "postText": "\n".join(s.postText),
-            "targetTitle": s.targetTitle,
+            "targetParagraphs": "\n".join(clickbait.targetParagraphs),
+            "postText": "\n".join(clickbait.postText),
+            "targetTitle": clickbait.targetTitle,
         }
-            for s in data])
+            for clickbait in data])
 
     def assemble_classification_prep_pipeline(self, sublinear_tf: bool, **kwargs):
         title_pipeline = Pipeline([
@@ -44,7 +44,7 @@ class StrategyForClassification(StrategyNLP, ABC):
             ('vect', CountVectorizer(stop_words="english")),
             ('tdf', TfidfTransformer(sublinear_tf=sublinear_tf))
         ])
-        par_pipeline = Pipeline([
+        paragraph_pipeline = Pipeline([
             ('vect', CountVectorizer(stop_words="english", **kwargs)),
             ('tdf', TfidfTransformer(sublinear_tf=sublinear_tf))
         ])
@@ -52,7 +52,7 @@ class StrategyForClassification(StrategyNLP, ABC):
         return ColumnTransformer([
             ('targetTitle', title_pipeline, 'targetTitle'),
             ('postText', description_pipeline, 'postText'),
-            ('targetParagraphs', par_pipeline, 'targetParagraphs'),
+            ('targetParagraphs', paragraph_pipeline, 'targetParagraphs'),
         ])
 
     def apply_on_single_clickbait(self, clickbait):
@@ -61,8 +61,8 @@ class StrategyForClassification(StrategyNLP, ABC):
 
     def apply_on_list_of_clickbaits(self, clickbait_list):
         preproc_data = self.prepare_data(clickbait_list)
-        sol = self.model.predict(preproc_data)
-        return [ClickbaitSummaryType(s).name for s in sol]
+        solutions = self.model.predict(preproc_data)
+        return [ClickbaitSummaryType(solution).name for solution in solutions]
 
     # Aceste metode vor fi implementate cand vom stabili o modalitate de a stoca modelele
     # dar momentan nu se încadrează in prioritatea acestor prime 2 iteratii
