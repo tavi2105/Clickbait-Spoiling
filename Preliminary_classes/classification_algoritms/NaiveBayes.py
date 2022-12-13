@@ -1,15 +1,7 @@
-import pandas
-from sklearn.compose import ColumnTransformer
-from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.pipeline import Pipeline
 from nltk.tokenize import word_tokenize
-
 from interfaces.StrategyForClassification import StrategyForClassification
-from interfaces.StrategyNLP import StrategyNLP
-from models.Clickbait import Clickbait
-from models.ClickbaitSolved import ClickbaitSolved
-from models.ClickbaitSummaryType import ClickbaitSummaryType
 
 
 class NaiveBayes(StrategyForClassification):

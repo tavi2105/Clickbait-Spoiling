@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+from abc import ABC
 
 import pandas
 from sklearn.compose import ColumnTransformer

@@ -18,7 +18,9 @@ class EvalForSummarization(StrategyForEvaluatingModels):
 
     def calculate_score(self, model, validating_data):
         correct_output_embedding = self.convert_to_embedding(self.correct_output)
-        actual_output_embedding = self.convert_to_embedding([x for x in model.apply_on_list_of_clickbaits(validating_data[:5])])
+        actual_output_embedding = self.convert_to_embedding(
+                                                    [x for x in model.apply_on_list_of_clickbaits(validating_data[:5])]
+                                                   )
         scores = []
         for i in range(len(actual_output_embedding)):
             scores.append(util.pytorch_cos_sim(correct_output_embedding[i], actual_output_embedding[i]).item())
