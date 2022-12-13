@@ -18,7 +18,7 @@ def time_log():
     logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
     @aspectlib.Aspect(bind=True)
-    def time_log_aspect(cutpoint, *args):
+    def time_log_aspect(cutpoint, *args, **kwargs):
         st = time.time()
         logging.info("Execution of " + cutpoint.__qualname__ + " started...")
 
