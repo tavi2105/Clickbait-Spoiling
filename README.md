@@ -8,6 +8,8 @@
 
 __Team coordinator__: Trandabat Diana
 
+[Technical report](https://docs.google.com/document/d/1GMiJgnQ2MpBe39xFwl4Dg8J3k22pXAmZZGvh1S18qeE/edit?usp=sharing)
+
 [State-of-the-art](https://docs.google.com/document/d/1FtX-hCu8vj5tXwKAaU7MDKjUMDrYk_XWlIpc4lOtzq0/edit?usp=sharing)
 
 [Requirement Analysis](https://docs.google.com/document/d/1gtEnHLsTFK_9xhxKy3KhVy-aJTylJpb_hxT5Z_y1mpY/edit?usp=sharing)
